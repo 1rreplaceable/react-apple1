@@ -7,6 +7,7 @@ function App() {
     let [like, setLike] = useState([0, 0, 0]);
     let [modal, setModal] = useState(false);
     let [tit, setTit] = useState(0);
+    let [inputValue, setInputValue] = useState('');
 
     function change() {
         let copy = [...title];
@@ -58,15 +59,35 @@ function App() {
                         <h4 onClick={() => {
                             setTit(i);
                             setModal(true);
-                        }}>{title[i]}<span style={{cursor: 'pointer'}} onClick={() => {
+                        }}>{title[i]}<span style={{cursor: 'pointer'}} onClick={(e) => {
+                            e.stopPropagation();
                             let copy = [...like];
                             copy[i]++;
                             setLike(copy);
                         }}>👍</span>{like[i]}</h4>
                         <p>2월 17일 발행</p>
+                        <button onClick={()=>{
+                            let copy = [...title];
+                            // for(let k=0; k<title.length; k++) {
+                            //     if(k !== i) {
+                            //         copy.push(title[k]);
+                            //     }
+                            // }
+                            copy.splice(i,1);
+                            setTitle(copy)
+                        }}>삭제</button>
                     </div>)
                 })
             }
+
+            <input onChange={(e) => {
+                setInputValue(e.target.value);
+            }} type="text"/>
+            <button onClick={()=>{
+                let copy = [...title];
+                //copy.push(inputValue);
+                copy.unshift(inputValue);
+                setTitle(copy)}}>입력</button>
 
             {
                 modal === true ? <Modal tit={tit} change={change} title={title}/> : null
@@ -87,5 +108,7 @@ function Modal(props) {
         </div>
     )
 }
+
+
 
 export default App;
